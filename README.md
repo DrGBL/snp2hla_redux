@@ -81,7 +81,7 @@ Here *reference_variant_panel_plink_prefix* is the prefix of the plink files of 
 1000000 1000000 0       0       0       0       A*01:01 A*02:02 B*01:01 B*02:02 C*01:01 C*02:02
 ```
 
-Full details of the other options can be read using *python -m MakeReference --help*.
+Full details of the other options can be read using `python -m MakeReference --help`.
 
 
 ### Imputation
@@ -100,4 +100,4 @@ python -m SNP2HLA \
   --mem 30g
 ```
 
-Here, the *path_out_reference* is the same as from *MakeReference* above. Again, full details can be obtained with *python -m SNP2HLA --help*.
+Here, the *path_out_reference* is the same as from *MakeReference* above. Again, full details can be obtained with `python -m SNP2HLA --help`.
