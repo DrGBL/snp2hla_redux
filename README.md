@@ -5,7 +5,7 @@ This tool does not handle association studies, for which we recommend the use of
 
 Major modifications 
 
-(1) The native use of GRCh38 instead successive liftovers to hg19 and hg18.
+(1) The native use of GRCh38 instead successive liftovers to hg19 and hg18. Note that at this point it *requires* that your data be in GRCh38. There is no plan to allow for GRCh37/hg19 or other builds in the future.
 
 (2) More genes.
 
@@ -59,7 +59,7 @@ $ chmod +x dependency/plink
 python -m MakeReference \
   --variants reference_variant_panel_plink_prefix \
   --chped hla_calls.ped \
-  --hg 38 \
+  --hg 38 \   #only 38 is allowed
   --mind 0.3 \
   --hardy 0.00000005 \
   --maf 0.00000005 \
