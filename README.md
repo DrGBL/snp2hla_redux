@@ -5,7 +5,7 @@ This tool does not handle association studies, for which we recommend the use of
 
 Major modifications 
 
-(1) The native use of GRCh38 instead of liftovers to hg18 (from hg19 if using GRCh38); 
+(1) The native use of GRCh38 instead successive liftovers to hg19 and hg18.
 
 (2) More genes.
 
