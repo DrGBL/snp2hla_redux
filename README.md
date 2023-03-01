@@ -20,7 +20,7 @@ Hence, please cite [the following paper](https://www.nature.com/articles/s41588-
 
 Luo, Y., Kanai, M., Choi, W. et al. A high-resolution HLA reference panel capturing global population diversity enables multi-ancestry fine-mapping in HIV host response. Nat Genet 53, 1504–1516 (2021). https://doi.org/10.1038/s41588-021-00935-7
 
-## Requirments & Dependencies
+## Requirements & Dependencies
 
 This software was tested in a CentOS environment.
 
