@@ -101,7 +101,3 @@ python -m SNP2HLA \
 ```
 
 Here, the *path_out_reference* is the same as from *MakeReference* above. Again, full details can be obtained with `python -m SNP2HLA --help`.
-=======
-# snp2hla_redux
-Modified version of SNP2HLA
->>>>>>> d359ef99b2ad9cc8d9e0b29edd1be4ceab8d8c7e
