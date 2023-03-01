@@ -48,10 +48,7 @@ Once downloaded, you might need to change the file permission for PLINK.
 $ chmod +x dependency/plink
 ```
 
-<br>
-<br>
-
-## Example
+## Usage
 
 ### Building reference panel
 
@@ -103,3 +100,9 @@ python -m SNP2HLA \
 ```
 
 Here, the *path_out_reference* is the same as from *MakeReference* above. Again, full details can be obtained with `python -m SNP2HLA --help`.
+
+### A few notes on the output files
+
+The output is a vcf with the reference panel variants and the HLA alleles, all imputed. Each imputed variant and alleles will include an R2 value. This should not be interpreted as a dosage. Please refer to the Beagle documentation for this.
+
+Also note that the major assumption made by SNP2HLA (and hence by SNP2HLA_reudx) is that each HLA allele is made into a biallelic SNP, and imputed as such. Hence, *it does not use the fact that HLA genes are multiallelic, and will sometimes impute more than 2 possible alleles for a gene, for a given sample*. Users of this software should be aware of this for their QC.
