@@ -55,6 +55,8 @@ $ chmod +x dependency/plink
 
 ### Building reference panel
 
+All code blocks below should be ran from the snp2hla_redux root folder.
+
 ```
 python -m MakeReference \
   --variants reference_variant_panel_plink_prefix \
