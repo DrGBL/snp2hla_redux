@@ -1,0 +1,10 @@
+linkage2beagle 2.0
+Command line: java -jar linakge2beagle.jar 
+  pedigree=MakeGeneticMap/example_bgl/1958BC.hg19.COPY.LiftDown_hg18.subset.nopheno.ped
+  data=MakeGeneticMap/example_bgl/1958BC.hg19.COPY.LiftDown_hg18.subset.dat
+  beagle=MakeGeneticMap/example_bgl/1958BC.hg19.COPY.LiftDown_hg18.subset.bgl.phased
+  standard=true
+
+
+Running time for creating BEAGLE file: 1 seconds
+linkage2beagle 2.0 finished

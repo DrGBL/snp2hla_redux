@@ -1,0 +1,34 @@
+PLINK v1.90b6.24 64-bit (6 Jun 2021)
+Options in effect:
+  --allow-no-sex
+  --bfile MakeGeneticMap/example_bgl/1000G_REF.EUR.chr6.hg18.29mb-34mb.inT1DGC
+  --keep MakeGeneticMap/example_bgl/1958BC.hg19.COPY.LiftDown_hg18.subset.samples
+  --make-bed
+  --noweb
+  --out MakeGeneticMap/example_bgl/1958BC.hg19.COPY.LiftDown_hg18.subset
+  --silent
+
+Hostname: d1p-hydrars01.ldi.lan
+Working directory: /project/richards/guillaume.butler-laporte/hla_tapas/my_tapas/HLA-TAPAS
+Start time: Wed Sep 14 09:38:25 2022
+
+Note: --noweb has no effect since no web check is implemented yet.
+Random number seed: 1663162705
+128905 MB RAM detected; reserving 64452 MB for main workspace.
+8016 variants loaded from .bim file.
+503 people (0 males, 0 females, 503 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to
+MakeGeneticMap/example_bgl/1958BC.hg19.COPY.LiftDown_hg18.subset.nosex .
+--keep: 100 people remaining.
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 100 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate in remaining samples is 0.987642.
+8016 variants and 100 people pass filters and QC.
+Note: No phenotypes present.
+--make-bed to
+MakeGeneticMap/example_bgl/1958BC.hg19.COPY.LiftDown_hg18.subset.bed +
+MakeGeneticMap/example_bgl/1958BC.hg19.COPY.LiftDown_hg18.subset.bim +
+MakeGeneticMap/example_bgl/1958BC.hg19.COPY.LiftDown_hg18.subset.fam ... done.
+
+End time: Wed Sep 14 09:38:25 2022
