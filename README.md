@@ -5,7 +5,7 @@ This tool does not handle association studies, for which we recommend the use of
 
 Major modifications 
 
-(1) The native use of GRCh38 instead of liftovers to hg18 (from hg19 if using GRCh38); 
+(1) The native use of GRCh38 instead of successive liftovers to hg19 and hg18. Note that at this point it *requires* that your data be in GRCh38. There is no plan to allow for GRCh37/hg19 or other builds in the future.
 
 (2) More genes.
 
@@ -20,7 +20,7 @@ Hence, please cite [the following paper](https://www.nature.com/articles/s41588-
 
 Luo, Y., Kanai, M., Choi, W. et al. A high-resolution HLA reference panel capturing global population diversity enables multi-ancestry fine-mapping in HIV host response. Nat Genet 53, 1504–1516 (2021). https://doi.org/10.1038/s41588-021-00935-7
 
-## Requirments & Dependencies
+## Requirements & Dependencies
 
 This software was tested in a CentOS environment.
 
@@ -48,18 +48,17 @@ Once downloaded, you might need to change the file permission for PLINK.
 $ chmod +x dependency/plink
 ```
 
-<br>
-<br>
-
-## Example
+## Usage
 
 ### Building reference panel
+
+All code blocks below should be ran from the snp2hla_redux root folder.
 
 ```
 python -m MakeReference \
   --variants reference_variant_panel_plink_prefix \
   --chped hla_calls.ped \
-  --hg 38 \
+  --hg 38 \   #only 38 is allowed
   --mind 0.3 \
   --hardy 0.00000005 \
   --maf 0.00000005 \
@@ -101,3 +100,9 @@ python -m SNP2HLA \
 ```
 
 Here, the *path_out_reference* is the same as from *MakeReference* above. Again, full details can be obtained with `python -m SNP2HLA --help`.
+
+### A few notes on the output files
+
+The output is a vcf with the reference panel variants and the HLA alleles, all imputed. Each imputed variant and alleles will include an R2 value. This should not be interpreted as a dosage. Please refer to the Beagle documentation for this.
+
+Also note that the major assumption made by SNP2HLA (and hence by SNP2HLA_reudx) is that each HLA allele is made into a biallelic SNP, and imputed as such. Hence, *it does not use the fact that HLA genes are multiallelic, and will sometimes impute more than 2 possible alleles for a gene, for a given sample*. Users of this software should be aware of this for their QC.
