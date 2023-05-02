@@ -44,6 +44,7 @@ if __name__ == "__main__":
     # Beagle 5.4
     parser.add_argument("--phasing", help="\nPerform phasing with Beagle 5.4.\n\n", action='store_true')
     parser.add_argument("--mem", help="\nJava Heap Memory size for Beagle 5.4. ex. 2g, 500m. Default: 4g.\n\n", default="4g")
+    parser.add_argument("--tmp_folder", help="\nFolder where java temporary files are created. Default: /tmp.\n\n", default="/tmp")
     parser.add_argument("--nthreads", help="\nThe number of threads to use in Bealge 5.4. (ex. 2)\n\n", default=1, type=int)
     parser.add_argument("--burnin", help="\nNumber of burn-in MCMC iterations for Beagle 5.4. Default: 3.\n\n", default=3, type=int)
     parser.add_argument("--iter", help="\nNumber of MCMC iterations after burn-ins for Beagle 5.4. Default: 12.\n\n", default=12, type=int)
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     print(args)
 
     MakeReference_v2(_CHPED=args.chped, _OUT=args.out, _hg=args.hg,
-                     _variants=args.variants, _java_heap_mem=args.mem,
+                     _variants=args.variants, _java_heap_mem=args.mem, _java_tmp_folder=args.tmp_folder,
                      _p_dependency=args.dependency, f_save_intermediates=args.save_intermediates,
                      f_phasing=args.phasing, _nthreads=args.nthreads,
                      _burnin=args.burnin, _iter=args.iter, _map=args.map,

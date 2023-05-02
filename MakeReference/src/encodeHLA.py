@@ -15,23 +15,17 @@ std_WARNING_MAIN_PROCESS_NAME = "\n[%s::WARNING]: " % (os.path.basename(__file__
 HLA_names = ["A", "B", "C", "E", "F", "G", "DMA", "DMB", "DOA", "DOB", "DPA1", "DPB1", "DQA1", "DQB1", "DRA", "DRB1", "DRB3", "DRB4", "DRB5"]
 
 # (2022.) WILL NOT USE HG19 AT ALL!!!!!!!!!!
-# here I use the average position of exons 2,3, and 4 as the position for each gene
-genepos_hg = {"38": {"A": floor((29942757+29944397)/2), "B": floor((31356957+31355317)/2), "C": floor((31271868+31270210)/2), 
-                     "E": floor((30489726+30491412)/2), "F": floor((29723658+29725306)/2), "G": floor((29828047+29829693)/2),
+# here I use the average position of exons 2,3 as the position for each gene (the mane/ensembl canonical transcripts if multiple choices of transcripts available)
+genepos_hg = {"38": {"A": floor((29942757+29943543)/2), "B": floor((31356957+31356167)/2), "C": floor((31271868+31271073)/2), 
+                     "E": floor((30489726+30490515)/2), "F": floor((29723658+	29724448)/2), "G": floor((29828047+29828818)/2),
                      "DMA": floor((32950803+32949611)/2), "DMB": floor((32938965+32937172)/2), "DOA": floor((33008261+33007311)/2), "DOB": floor((32815313+32814320)/2), 
-                     "DPA1": floor((33069886+33069019)/2), "DPB1": floor((33080672+33085231)/2), 
+                     "DPA1": floor((33073669+	33069641)/2), "DPB1": floor((33080672+33085231)/2), 
                      "DQA1": floor((32641310+32642253)/2), "DQB1": floor((32665067+32661967)/2),
                      "DRA": floor((32442448+32443466)/2),
-                     "DRB1": floor((32584378+32581557)/2), "DRB3": floor((32455037+32452184)/2), "DRB4": floor((32547835+32544547)/2), "DRB5": floor((32522174+32519370)/2)}}
+                     "DRB1": floor((32584378+32581557)/2), "DRB3": floor((32455037+32452184)/2), "DRB4": floor((32547835+32544547)/2), "DRB5": floor((32522174+32519370)/2),
+                     "DPA2": floor((33093137+33092119))/2), "H": floor((29887955+29888742))/2), "J": floor((30006800+30007593))/2), "K": floor((29926660+29927452))/2), "L": floor((30260397+30261479))/2),
+                     "MICA": floor((31410543+31411359))/2), "MICB": floor((31505617+31506430))/2), "V": floor((29792437+29793136))/2)}}
 
-#for fun, trying the DQB1*02:01 vs DQB1*02:02 thing where I put DQB1 at the G that differs
-#genepos_hg = {"38": {"A": floor((29942757+29944397)/2), "B": floor((31356957+31355317)/2), "C": floor((31271868+31270210)/2), 
-#                     "E": floor((30489726+30491412)/2), "F": floor((29723658+29725306)/2), "G": floor((29828047+29829693)/2),
-#                     "DMA": floor((32950803+32949611)/2), "DMB": floor((32938965+32937172)/2), "DOA": floor((33008261+33007311)/2), "DOB": floor((32815313+32814320)/2), 
-#                     "DPA1": floor((33069886+33069019)/2), "DPB1": floor((33080672+33085231)/2), 
-#                     "DQA1": floor((32641310+32642253)/2), "DQB1": 32662130,
-#                     "DRA": floor((32442448+32443466)/2),
-#                     "DRB1": floor((32584378+32581557)/2), "DRB3": floor((32455037+32452184)/2), "DRB4": floor((32547835+32544547)/2), "DRB5": floor((32522174+32519370)/2)}}
 
 def encodeHLA(_CHPED, _OUTPUT, __asSmallLetter=True, __addDummyMarker=False, __previous_version=False):
 

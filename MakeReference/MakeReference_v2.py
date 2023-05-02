@@ -18,7 +18,7 @@ std_WARNING_MAIN_PROCESS_NAME = "\n[%s::WARNING]: " % (os.path.basename(__file__
 
 
 def MakeReference_v2(_CHPED, _OUT, _hg, _variants=None,
-                     _java_heap_mem='2g', _java_stack_mem='1g',
+                     _java_heap_mem='2g', _java_stack_mem='1g', _java_tmp_folder="/tmp",
                      _p_dependency="dependency/", f_save_intermediates=True, f_phasing=False, _nthreads=1,
                      _burnin=3, _iter=12, _map="null",
                      _mind=0.3, _hardy=0.000001, _maf=0.01, _miss=0.05,
@@ -141,9 +141,9 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _variants=None,
     #SNPS_CODED = OUTPUT + '.SNPS.CODED'
 
     plink = ' '.join([_p_plink, "--noweb", "--silent"])
-    beagle = ' '.join(["java", "-Xmx{}".format(_java_heap_mem), "-Xss{}".format(_java_stack_mem), "-jar", _p_beagle])
-    linkage2beagle = ' '.join(["java", "-Xmx{}".format(_java_heap_mem), "-jar", _p_linkage2beagle])
-    beagle2vcf = ' '.join(["java", "-Xmx{}".format(_java_heap_mem), "-jar", _p_beagle2vcf])
+    beagle = ' '.join(["java", "-Xmx{}".format(_java_heap_mem), "-Xss{}".format(_java_stack_mem), "-Djava.io.tmpdir={}".format(_java_tmp_folder), "-jar", _p_beagle])
+    linkage2beagle = ' '.join(["java", "-Xmx{}".format(_java_heap_mem), "-Djava.io.tmpdir={}".format(_java_tmp_folder), "-jar", _p_linkage2beagle])
+    beagle2vcf = ' '.join(["java", "-Xmx{}".format(_java_heap_mem), "-Djava.io.tmpdir={}".format(_java_tmp_folder), "-jar", _p_beagle2vcf])
 
 
 

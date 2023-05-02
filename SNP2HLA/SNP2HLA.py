@@ -349,7 +349,7 @@ def SNP2HLA(_target, _reference, _out, _maf="0.01", _mem="2g", _tolerated_diff=.
         # print(command)
         os.system(command)
 
-
+        
         os.system(' '.join(["rm ", OUTPUT + ".SNPS.*"]))
         os.system(' '.join(["rm ", __MHC__+".QC.bed"]))
         os.system(' '.join(["rm ", __MHC__+".QC.bim"]))
