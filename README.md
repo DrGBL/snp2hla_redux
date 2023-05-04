@@ -29,7 +29,7 @@ Python system requires next settings.
 - pandas=1.0.3
 
 R statistical programming language requires next settings.
-- R=3.6.x
+- R=3.9.x
 - argparse
 - stringr
 - purrr
