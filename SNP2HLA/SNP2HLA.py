@@ -480,6 +480,7 @@ def SNP2HLA(_target, _reference, _out, _maf="0.01", _mem="2g", _tolerated_diff=.
             # remove redundant log file.
             os.system("rm {}".format(OUTPUT +".bgl.phased.log"))
             os.system('rm -rf {}'.format(JAVATMP))
+            print("Done\n")
 
         # """
         # (1) Imputation result in *.vcf.gz file
@@ -512,7 +513,6 @@ def SNP2HLA(_target, _reference, _out, _maf="0.01", _mem="2g", _tolerated_diff=.
         # os.system(' '.join(["rm ", __MHC__+".QC.vcf.gz"]))
         # os.system(' '.join(["rm -rf", JAVATMP]))
 
-    print("Done\n")
 
 
 
