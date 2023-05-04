@@ -39,7 +39,6 @@ R statistical programming language requires next settings.
 - data.table
 - parallel
 - rcompanion
-- vroom
 
 You will also need the softwares in the 'dependency/' folder i.e. Plink1.9, software (mach) from the Gonçalo Abecasis lab, and code/software from the Brian Browning lab (including BEAGLE 5.4). All copyrights to their respective authors.
 
