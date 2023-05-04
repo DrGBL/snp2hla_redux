@@ -31,6 +31,7 @@ genepos_hg = {"38": {"A": floor((29942757+29943543)/2), "B": floor((31356957+313
 def encodeHLA(_CHPED, _OUTPUT, _genes, __asSmallLetter=True, __addDummyMarker=False, __previous_version=False):
 
     HLA_names = _genes.split(",")
+    print(HLA_names)
 
     ### Intermediate path.
     _OUTPUT = _OUTPUT if not _OUTPUT.endswith('/') else _OUTPUT.rstrip('/')
@@ -141,7 +142,7 @@ def encodeHLA(_CHPED, _OUTPUT, _genes, __asSmallLetter=True, __addDummyMarker=Fa
 
     with open(_OUTPUT + ".ped", 'w') as f_HLA_ped:
         f_HLA_ped.writelines(
-            MakeHLAPed(_CHPED, HLA_allele_sets, __asSmallLetter=__asSmallLetter, __addDummyMarker=__addDummyMarker,
+            MakeHLAPed(_CHPED, HLA_allele_sets, HLA_names, __asSmallLetter=__asSmallLetter, __addDummyMarker=__addDummyMarker,
                        __previous_version=__previous_version))
 
 
@@ -253,10 +254,12 @@ def PrintGenotypes4(_allele1, _allele2, _HLA_allele_sets_byHLA, __asSmallLetter=
 
 
 
-def MakeHLAPed(_CHPED, _HLA_allele_sets, __asSmallLetter=False, __addDummyMarker=False, __previous_version=False):
+def MakeHLAPed(_CHPED, _HLA_allele_sets, _hla_names, __asSmallLetter=False, __addDummyMarker=False, __previous_version=False):
 
     with open(_CHPED, 'r') as f_chped:
-
+        
+        HLA_names = _hla_names
+        
         count = 0
 
         for l in f_chped:
@@ -353,5 +356,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     print(args)
 
-    encodeHLA(args.chped, args.o, __asSmallLetter=(not args.asSmallLetter),
+    encodeHLA(args.chped, args.o, args.genes, __asSmallLetter=(not args.asSmallLetter),
               __addDummyMarker=args.addDummyMarker, __previous_version=args.previous_version)

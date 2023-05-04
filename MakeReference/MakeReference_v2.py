@@ -177,7 +177,7 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
         print("[{}] Encoding HLA alleles.".format(index))
 
         ### (1) Encoded HLA ( *.HLA.{ped,map} ) ###
-        encodeHLA(HLA_DATA, OUTPUT + ".HLA", _hg, _genes)
+        encodeHLA(HLA_DATA, OUTPUT + ".HLA", _genes, _hg)
 
         ### (2) Final Encoded Outputs ( *.HLA.{bed,bim,fam,nosex,log} ) ###
         command = ' '.join([plink, "--file", OUTPUT + '.HLA', "--make-bed", "--out", OUTPUT + '.HLA'])
