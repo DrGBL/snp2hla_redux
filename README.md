@@ -25,11 +25,11 @@ Luo, Y., Kanai, M., Choi, W. et al. A high-resolution HLA reference panel captur
 This software was tested in a CentOS environment.
 
 Python system requires next settings.
-- python=3.7.x
-- pandas=1.0.3
+- python>=3.7
+- pandas>=1.0.3
 
 R statistical programming language requires next settings.
-- R=3.9.x
+- R>=3.6
 - argparse
 - stringr
 - purrr
