@@ -672,7 +672,7 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
             #command = ''.join(['mv ', OUTPUT, '.bgl.phased.vcf.gz ', OUTPUT, '_tmp.bgl.phased.vcf.gz'])
             #os.system(command)
             
-            command = ''.join(["sh MakeReference/src/Adjust_output.sh --path_Ref ", OUTPUT])
+            command = ''.join(["bash MakeReference/src/Adjust_output.sh --path_Ref ", OUTPUT])
             os.system(command)
             
             #command = ''.join(['rm ', OUTPUT, '_tmp.bgl.phased.vcf.gz'])
