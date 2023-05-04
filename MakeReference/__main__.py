@@ -28,8 +28,9 @@ if __name__ == "__main__":
 
     parser.add_argument("--variants", help="\nInput variants data file(.bed/.bim/.fam)\n\n", required=True)
     parser.add_argument("--chped", help="\nHLA Type Data(.chped)\n\n", required=True)
+    parser.add_argument("--genes", help="\nComma separated list of HLA genes, in the same order as in the chped columns.\nIf not in the same order, there will be problems.\nDefault: A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DOA,DOB,DPA1,DPA2,DPB1,DQA1,DQB1,DRA,DRB1,DRB3,DRB4,DRB5,MICA,MICB.\n\n", default="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DOA,DOB,DPA1,DPA2,DPB1,DQA1,DQB1,DRA,DRB1,DRB3,DRB4,DRB5,MICA,MICB")
     parser.add_argument("--hg", help="\nHuman Genome version(ex. 18, 19)\n\n", choices=["18", "19", "38"], metavar="hg",
-                        default="19")
+                        default="38")
     parser.add_argument("--out", "-o", help="\nOutput file prefix\n\n", required=True)
 
     parser.add_argument("--save-intermediates", help="\nDon't remove intermediate files.\n\n", action='store_true')
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     print(args)
 
-    MakeReference_v2(_CHPED=args.chped, _OUT=args.out, _hg=args.hg,
+    MakeReference_v2(_CHPED=args.chped, _OUT=args.out, _hg=args.hg, _genes=args.genes,
                      _variants=args.variants, _java_heap_mem=args.mem, _java_tmp_folder=args.tmp_folder,
                      _p_dependency=args.dependency, f_save_intermediates=args.save_intermediates,
                      f_phasing=args.phasing, _nthreads=args.nthreads,

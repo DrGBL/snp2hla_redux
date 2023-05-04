@@ -12,7 +12,8 @@ std_MAIN_PROCESS_NAME = "\n[%s]: " % (os.path.basename(__file__))
 std_ERROR_MAIN_PROCESS_NAME = "\n[%s::ERROR]: " % (os.path.basename(__file__))
 std_WARNING_MAIN_PROCESS_NAME = "\n[%s::WARNING]: " % (os.path.basename(__file__))
 
-HLA_names = ["A", "B", "C", "E", "F", "G", "DMA", "DMB", "DOA", "DOB", "DPA1", "DPB1", "DQA1", "DQB1", "DRA", "DRB1", "DRB3", "DRB4", "DRB5", "DPA2", "H", "J", "K", "L", "MICA", "MICB", "V"]
+#These are all the genes handled for now
+#HLA_names = ["A", "B", "C", "E", "F", "G", "H", "J", "K", "L", "V", "DMA", "DMB", "DOA", "DOB", "DPA1", "DPA2", "DPB1", "DQA1", "DQB1", "DRA", "DRB1", "DRB3", "DRB4", "DRB5", "MICA", "MICB"]
 
 # (2022.) WILL NOT USE HG19 AT ALL!!!!!!!!!!
 # here I use the average position of exons 2,3 as the position for each gene (the mane/ensembl canonical transcripts if multiple choices of transcripts available)
@@ -27,9 +28,9 @@ genepos_hg = {"38": {"A": floor((29942757+29943543)/2), "B": floor((31356957+313
                      "MICA": floor((31410543+31411359)/2), "MICB": floor((31505617+31506430)/2), "V": floor((29792437+29793136)/2)}}
 
 
-def encodeHLA(_CHPED, _OUTPUT, __asSmallLetter=True, __addDummyMarker=False, __previous_version=False):
+def encodeHLA(_CHPED, _OUTPUT, _genes, __asSmallLetter=True, __addDummyMarker=False, __previous_version=False):
 
-
+    HLA_names = _genes.split(",")
 
     ### Intermediate path.
     _OUTPUT = _OUTPUT if not _OUTPUT.endswith('/') else _OUTPUT.rstrip('/')

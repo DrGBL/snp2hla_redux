@@ -17,7 +17,7 @@ std_ERROR_MAIN_PROCESS_NAME = "\n[%s::ERROR]: " % (os.path.basename(__file__))
 std_WARNING_MAIN_PROCESS_NAME = "\n[%s::WARNING]: " % (os.path.basename(__file__))
 
 
-def MakeReference_v2(_CHPED, _OUT, _hg, _variants=None,
+def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DOA,DOB,DPA1,DPA2,DPB1,DQA1,DQB1,DRA,DRB1,DRB3,DRB4,DRB5,MICA,MICB", _variants=None,
                      _java_heap_mem='2g', _java_stack_mem='1g', _java_tmp_folder="/tmp",
                      _p_dependency="dependency/", f_save_intermediates=True, f_phasing=False, _nthreads=1,
                      _burnin=3, _iter=12, _map="null",
@@ -177,7 +177,7 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _variants=None,
         print("[{}] Encoding HLA alleles.".format(index))
 
         ### (1) Encoded HLA ( *.HLA.{ped,map} ) ###
-        encodeHLA(HLA_DATA, OUTPUT + ".HLA", _hg)
+        encodeHLA(HLA_DATA, OUTPUT + ".HLA", _hg, _genes)
 
         ### (2) Final Encoded Outputs ( *.HLA.{bed,bim,fam,nosex,log} ) ###
         command = ' '.join([plink, "--file", OUTPUT + '.HLA', "--make-bed", "--out", OUTPUT + '.HLA'])

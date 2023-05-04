@@ -57,20 +57,22 @@ All code blocks below should be ran from the snp2hla_redux root folder.
 python -m MakeReference \
   --variants reference_variant_panel_plink_prefix \
   --chped hla_calls.ped \
+  --genes A,B,C,DPA1,DPB1,DQA1,DQB1,DRB1 \ #order is important, you can add more genes, see help command output
   --hg 38 \   #only 38 is allowed
   --mind 0.3 \
   --hardy 0.00000005 \
   --maf 0.00000005 \
   --miss 0.05 \
   --hla_maf 0.00000005 \
-  --out path_out_reference \
+  --out full_path_out_reference \
   --mem 50G \
   --burnin 20 \
   --iter 100 \
   --nthreads 20 \
   --phasing \
   --window 10 \
-  --overlap 1.8
+  --overlap 1.8 \
+  --tmp /tmp
 ```
 
 Here *reference_variant_panel_plink_prefix* is the prefix of the plink files of the reference sample and hla_calls.ped is a ped file with the HLA alleles. For example, for an individual with IID and FID 1000000, for which we have three HLA genes (A, B, and C), their row would be:
@@ -88,7 +90,7 @@ Full details of the other options can be read using `python -m MakeReference --h
 python -m SNP2HLA \
   --target target_variants_plink_prefix \
   --reference path_out_reference \
-  --out path_out_imputed \
+  --out full_path_out_imputed \
   --nthreads 20 \
   --burnin 10 \
   --iter 100 \
