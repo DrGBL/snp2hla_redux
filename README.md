@@ -3,7 +3,7 @@ This is a modification, simplification, and overhaul of **HLA-TAPAS** which hand
 
 This tool does not handle association studies, for which we recommend the use of proper GWAS software to better adjust for relatedness (e.g. REGENIE, SAIGE).
 
-Major modifications 
+Modifications:
 
 (1) The native use of GRCh38 instead of successive liftovers to hg19 and hg18. Note that at this point it *requires* that your data be in GRCh38. There is no plan to allow for GRCh37/hg19 or other builds in the future.
 
@@ -13,6 +13,8 @@ Major modifications
 
 (4) More options to control the QC parameters of *MakeReference* and *SNP2HLA*
 
+There was no change in the algorithm otherwise. Specifically, the actual imputation is only performed by Beagle, and the rest of the software is used as a wrapper for Beagle.
+
 ## Credit and citation
 You will find that much of the code and documentation was either inspired by or directly pulled from **HLA-TAPAS**.
 
@@ -21,6 +23,8 @@ Hence, please cite [the following paper](https://www.nature.com/articles/s41588-
 Luo, Y., Kanai, M., Choi, W. et al. A high-resolution HLA reference panel capturing global population diversity enables multi-ancestry fine-mapping in HIV host response. Nat Genet 53, 1504–1516 (2021). https://doi.org/10.1038/s41588-021-00935-7
 
 ## Requirements & Dependencies
+
+To install the software, simply clone this git in your environment.
 
 This software was tested in a CentOS environment.
 
