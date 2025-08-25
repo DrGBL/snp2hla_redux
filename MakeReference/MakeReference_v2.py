@@ -25,6 +25,21 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
                      _hla_maf=0.0001, _window=2.8, _overlap=1.25):
 
 
+    if isinstance(_mind, float):
+        _mind = str(_mind)
+
+    if isinstance(_hardy, float):
+        _hardy = str(_hardy)
+
+    if isinstance(_maf, float):
+        _maf = str(_maf)
+
+    if isinstance(_miss, float):
+        _miss = str(_miss)
+
+    if isinstance(_hla_maf, float):
+        _hla_maf = str(_hla_maf)
+                       
     ########## < Core Variables > ##########
 
     ### [1] Major Path Variables
