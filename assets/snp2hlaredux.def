@@ -1,0 +1,107 @@
+BootStrap: docker
+From: mambaorg/micromamba:1.5.10-noble
+
+%post
+
+    # Configure channels for micromamba
+    micromamba config append channels conda-forge
+    micromamba config append channels bioconda
+    micromamba config append channels defaults
+
+    # Install basic tools in the `base` environment
+    micromamba install -y -n base conda-forge::git conda-forge::procps-ng bioconda::bcftools bioconda::htslib bioconda::samtools conda-forge::openjdk gxx_linux-64 
+
+    # Ensure the PATH is correctly configured
+    export PATH="$MAMBA_ROOT_PREFIX/bin:$PATH"
+
+    # Export the environment for traceability
+    micromamba env export --name base --explicit > environment.lock
+    micromamba clean -a -y
+
+    # Create and configure the `snp2hla_redux_env` environment
+    micromamba create -n snp2hla_redux_env python=3.6 -y
+    micromamba install -y -n snp2hla_redux_env r-base=3.6 openjdk pandas compilers gcc_linux-64 gxx_linux-64
+    micromamba run -n snp2hla_redux_env R -e "
+        # Install required R packages
+        install.packages(c('lattice', 'cpp11'), repos='https://cloud.r-project.org');
+        install.packages(c('argparse', 'stringr', 'purrr', 'dplyr', 'multidplyr', 'tidyr', 'data.table', 'parallel', 'rcompanion'), repos='https://cloud.r-project.org', dependencies=TRUE)
+    "
+
+    cd /opt
+    git clone https://github.com/DrGBL/snp2hla_redux.git
+    rm -rf .git
+
+    # Make scripts executable and create symbolic links for easier access
+    chmod +x /opt/snp2hla_redux/Adjusted_CookHLA.sh
+    ln -s /opt/snp2hla_redux/Adjusted_CookHLA.sh /usr/local/bin/Adjusted_CookHLA
+
+    chmod +x /opt/snp2hla_redux/MakeReference/src/Adjust_output.sh
+    ln -s /opt/snp2hla_redux/MakeReference/src/Adjust_output.sh /usr/local/bin/Adjust_output
+    
+    chmod +x /opt/snp2hla_redux/dependency/plink
+    ln -s /opt/snp2hla_redux/dependency/plink /usr/local/bin/plink
+
+    # Create wrapper scripts for Java-based tools
+    echo '#!/bin/bash
+    java -jar  /opt/snp2hla_redux/dependency/beagle.jar "$@"' > /usr/local/bin/beagle
+    chmod +x /usr/local/bin/beagle
+
+    echo '#!/bin/bash
+    java -jar  /opt/snp2hla_redux/dependency/beagle2linkage.jar "$@"' > /usr/local/bin/beagle2linkage
+    chmod +x /usr/local/bin/beagle2linkage
+
+    echo '#!/bin/bash
+    java -jar  /opt/snp2hla_redux/dependency/beagle2vcf.jar "$@"' > /usr/local/bin/beagle2vcf
+    chmod +x /usr/local/bin/beagle2vcf
+
+    echo '#!/bin/bash
+    java -jar  /opt/snp2hla_redux/dependency/vcf2beagle.jar "$@"' > /usr/local/bin/vcf2beagle
+    chmod +x /usr/local/bin/vcf2beagle
+
+    echo '#!/bin/bash
+    java -jar  /opt/snp2hla_redux/dependency/linkage2beagle.jar "$@"' > /usr/local/bin/linkage2beagle
+    chmod +x /usr/local/bin/linkage2beagle
+
+    # Create wrapper scripts for Python-based tools
+    # echo '#!/bin/bash
+    # micromamba run -n snp2hla_redux_env python -m MakeReference --dependency /opt/snp2hla_redux/dependency "$@"' > /usr/local/bin/MakeReference
+    echo '#!/bin/bash
+    export XDG_CACHE_HOME=/tmp/mamba-cache
+    exec micromamba run -n snp2hla_redux_env python -m MakeReference --dependency /opt/snp2hla_redux/dependency "$@"' > /usr/local/bin/MakeReference
+    chmod +x /usr/local/bin/MakeReference
+
+    # echo '#!/bin/bash
+    # micromamba run -n snp2hla_redux_env python -m SNP2HLA "$@"' > /usr/local/bin/SNP2HLA
+    echo '#!/bin/bash
+    export XDG_CACHE_HOME=/tmp/mamba-cache
+    exec micromamba run -n snp2hla_redux_env python -m SNP2HLA "$@"' > /usr/local/bin/SNP2HLA
+    chmod +x /usr/local/bin/SNP2HLA
+    
+    # echo '#!/bin/bash
+    # micromamba run -n snp2hla_redux_env python -m MakeGeneticMap "$@"' > /usr/local/bin/MakeGeneticMap
+    echo '#!/bin/bash
+    export XDG_CACHE_HOME=/tmp/mamba-cache
+    exec micromamba run -n snp2hla_redux_env python -m MakeGeneticMap "$@"' > /usr/local/bin/MakeGeneticMap
+    chmod +x /usr/local/bin/MakeGeneticMap
+
+    micromamba clean -a -y
+
+%environment
+    # Set environment variables for runtime
+    export PATH="$MAMBA_ROOT_PREFIX/bin:$PATH"
+    export PYTHONPATH=/opt/snp2hla_redux:$PYTHONPATH
+
+%test
+    # Test installed tools to ensure they are functional
+    echo "Testing bcftools..."
+    bcftools --version || exit 1
+    echo "Testing htslib..."
+    htsfile --version || exit 1
+    echo "Testing samtools..."
+    samtools --version || exit 1
+    echo "Testing MakeReference..."
+    MakeReference --help || exit 1
+    echo "Testing SNP2HLA..."
+    SNP2HLA --help || exit 1
+    echo "Testing Adjusted_CookHLA..."
+    Adjusted_CookHLA --help || exit 1

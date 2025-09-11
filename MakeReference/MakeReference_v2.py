@@ -196,8 +196,10 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
 
         ### (2) Final Encoded Outputs ( *.HLA.{bed,bim,fam,nosex,log} ) ###
         command = ' '.join([plink, "--file", OUTPUT + '.HLA', "--make-bed", "--out", OUTPUT + '.HLA'])
-        # print(command)
-        os.system(command)
+        print(command)
+        result = subprocess.run(command, shell=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
         index += 1
 
@@ -252,49 +254,74 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
 
             ### (1) --filter-founders to variants data ( *.FOUNDERS )
             command = ' '.join([plink, "--bfile", SNP_DATA, "--filter-founders", "--mind", _mind, "--alleleACGT", "--make-bed", "--out", SNP_DATA2+'.FOUNDERS'])
-            # print(command)
-            os.system(command)
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
 
             ### (2) QC ( *.FOUNDERS.{hardy,freq,missing )
             # Initial QC on Reference SNP panel
             command = ' '.join([plink, "--bfile", SNP_DATA2+'.FOUNDERS', "--hardy", "--out", SNP_DATA2+'.FOUNDERS.hardy'])
-            # print(command)
-            os.system(command)
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
+            
             command = ' '.join([plink, "--bfile", SNP_DATA2+'.FOUNDERS', "--freq", "--out", SNP_DATA2+'.FOUNDERS.freq'])
-            # print(command)
-            os.system(command)
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
+            
             command = ' '.join([plink, "--bfile", SNP_DATA2+'.FOUNDERS', "--missing", "--out", SNP_DATA2+'.FOUNDERS.missing'])
             # print(command)
-            os.system(command)
-
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
             ### (3) Stuffs to remove ( remove.snps.hardy, remove.snps.freq, remove.snps.missing, all.remove.snps )
             command = ' '.join(["awk", "'{if (NR > 1){print}}'", SNP_DATA2+'.FOUNDERS.hardy.hwe', "|", "awk", "' $9 <", _hardy, "{ print $2 }'", "|", "sort -u", ">", os.path.join(INTERMEDIATE_PATH, "remove.snps.hardy")])
-            # print(command)
-            os.system(command)
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
+            
             command = ' '.join(["awk", "'{if (NR > 1){print}}'", SNP_DATA2+'.FOUNDERS.freq.frq', "|", "awk", "' $5 <", _maf, "{ print $2 } '", ">", os.path.join(INTERMEDIATE_PATH, "remove.snps.freq")])
-            # print(command)
-            os.system(command)
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
+            
             command = ' '.join(["awk", "'{if (NR > 1){print}}'", SNP_DATA2+'.FOUNDERS.missing.lmiss', "|", "awk", "' $5 >", _miss, "{ print $2 } '", ">", os.path.join(INTERMEDIATE_PATH, "remove.snps.missing")])
-            # print(command)
-            os.system(command)
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
+            
             command = ' '.join(["cat", os.path.join(INTERMEDIATE_PATH, "remove.snps.*"), "|", "sort -u", ">", os.path.join(INTERMEDIATE_PATH, "all.remove.snps")])
-            # print(command)
-            os.system(command)
-
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
             ### (4) Filtering out Quality-controled FOUNDERS ( *.FOUNDERS.QC )
             command = ' '.join([plink, "--bfile", SNP_DATA2+'.FOUNDERS', "--allow-no-sex", "--exclude", os.path.join(INTERMEDIATE_PATH, "all.remove.snps"), "--make-bed", "--out", SNP_DATA2+'.FOUNDERS.QC'])
             # print(command)
-            os.system(command)
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
             # Founders are identified here as individuals with "0"s in mother and father IDs in .fam file
 
             ### (5) --filter-founders to HLA information ( *.{HLA,AA,SNPS}.FOUNDERS )
             command = ' '.join([plink, "--bfile", OUTPUT+'.HLA', "--filter-founders", "--maf", _hla_maf, "--make-bed", "--out", OUTPUT+'.HLA.FOUNDERS'])
-            # print(command)
-            os.system(command)
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
             #command = ' '.join([plink, "--bfile", OUTPUT+'.SNPS.CODED', "--filter-founders", "--maf 0.0001", "--make-bed", "--out", OUTPUT+'.SNPS.FOUNDERS'])
             # print(command)
             #os.system(command)
@@ -363,8 +390,10 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
 
 
             command = ' '.join(["echo", OUTPUT + '.HLA.FOUNDERS.bed', OUTPUT + '.HLA.FOUNDERS.bim', OUTPUT + '.HLA.FOUNDERS.fam', ">", TMP_merged_list])
-            # print(command)
-            os.system(command)
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
             #command = ' '.join(["echo", OUTPUT + '.AA.FOUNDERS.bed', OUTPUT + '.AA.FOUNDERS.bim', OUTPUT + '.AA.FOUNDERS.fam', ">>", TMP_merged_list])
             # print(command)
@@ -379,8 +408,10 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
             command = ' '.join(
                 [plink, "--bfile", SNP_DATA2 + '.FOUNDERS.QC', "--merge-list", TMP_merged_list, "--make-bed", "--out",
                  OUTPUT + '.MERGED.FOUNDERS'])
-            # print(command)
-            os.system(command)
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
 
             """
@@ -431,24 +462,32 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
         
         
         command = ' '.join([plink, "--bfile", OUTPUT + '.MERGED.FOUNDERS', "--freq", "--out", OUTPUT + '.MERGED.FOUNDERS.FRQ'])
-            # print(command)
-        os.system(command)
+        print(command)
+        result = subprocess.run(command, shell=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"Command failed with exit code {result.returncode}")
         
         command = ' '.join(
             ["awk", '\'{if (NR > 1){if (($3 == "a" && $4 == "p") || ($4 == "a" && $3 == "p")){print $2 "\tp"}}}\'',
              OUTPUT + '.MERGED.FOUNDERS.FRQ.frq', ">", TMP_allele_order])
-        # print(command)
-        os.system(command)
+        print(command)
+        result = subprocess.run(command, shell=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"Command failed with exit code {result.returncode}")
         
         command = ' '.join(
             [plink, "--bfile", OUTPUT + '.MERGED.FOUNDERS', "--a1-allele", TMP_allele_order, "--make-bed", "--out", OUTPUT])
-        # print(command)
-        os.system(command)
+        print(command)
+        result = subprocess.run(command, shell=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
         command = ' '.join([plink, "--bfile", OUTPUT, "--keep-allele-order", "--freq", "--out", OUTPUT + '.FRQ',
                             "--a1-allele", TMP_allele_order])
-        # print(command)
-        os.system(command)
+        print(command)
+        result = subprocess.run(command, shell=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"Command failed with exit code {result.returncode}")
         
         """
             Generated Outputs :
@@ -527,8 +566,11 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
 
                 # command = ' '.join(["awk", '\'{print $2" "$4" "$5" "$6}\'', OUTPUT + '.bim', ">", OUTPUT + '.markers'])
                 command = ' '.join(["awk", '\'{print $2" "$4" "$6" "$5}\'', bim_ATtrick, ">", OUTPUT + '.ATtrick.markers'])
-                # print(command)
-                os.system(command)
+                print(command)
+                result = subprocess.run(command, shell=True)
+                if result.returncode != 0:
+                    raise RuntimeError(f"Command failed with exit code {result.returncode}")
+
                 """
                 Plink works by setting ALT allele as a1-allele, which is the 5th column of bim file.
                 However, VCF file sets a2-allele, which is the 6th column of plink bim file, as ALT allele.
@@ -552,37 +594,42 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
                     [plink, "--bed", OUTPUT+'.bed', "--bim", bim_ATtrick, "--fam", OUTPUT+'.fam',
                      "--keep-allele-order", "--recode", "--alleleACGT", "--out", OUTPUT+'.ATtrick',
                      "--a1-allele", a1_allele_ATtrick])
-                # print(command)
-                os.system(command)
+                print(command)
+                result = subprocess.run(command, shell=True)
+                if result.returncode != 0:
+                    raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
                 command = ' '.join(["awk", '\'{print "M " $2}\'', OUTPUT + '.ATtrick.map', ">", OUTPUT + '.ATtrick.dat'])
-                # print(command)
-                os.system(command)
+                print(command)
+                result = subprocess.run(command, shell=True)
+                if result.returncode != 0:
+                    raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
                 command = ' '.join(["cut -d ' ' -f1-5,7-", OUTPUT + '.ATtrick.ped', ">", OUTPUT + '.ATtrick.nopheno.ped'])
-                # print(command)
-                os.system(command)
+                print(command)
+                result = subprocess.run(command, shell=True)
+                if result.returncode != 0:
+                    raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
                 index += 1
 
                 print("[{}] Converting PLINK to BEAGLE format.".format(index))
-
                 command = ' '.join([linkage2beagle, "pedigree=" + OUTPUT + '.ATtrick.nopheno.ped', "data=" + OUTPUT + '.ATtrick.dat',
                                     "beagle=" + OUTPUT + '.ATtrick.bgl', "standard=true", ">", OUTPUT + '.ATtrick.bgl.log'])
-                # print(command)
-                os.system(command)
-
+                print(command)
+                result = subprocess.run(command, shell=True)
+                if result.returncode != 0:
+                    raise RuntimeError(f"Command failed with exit code {result.returncode}")
                 index += 1
 
                 # for Beagle 4.1
                 print("[{}] Converting BEAGLE to VCF format.".format(index))
-
                 command = ' '.join([beagle2vcf, '6', redefined_markers, OUTPUT + '.ATtrick.bgl', '0', '>', OUTPUT+'.bgl.vcf'])
-                # print(command)
-                os.system(command)
-
+                print(command)
+                result = subprocess.run(command, shell=True)
+                if result.returncode != 0:
+                    raise RuntimeError(f"Command failed with exit code {result.returncode}")
                 index += 1
-
 
                 if not f_save_intermediates:
                     # os.system("rm {}".format())
@@ -596,8 +643,6 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
                     os.system("rm {}".format(OUTPUT + '.ATtrick.markers'))
                     os.system("rm {}".format(bim_ATtrick))
                     os.system("rm {}".format(a1_allele_ATtrick))
-
-
 
             if PHASE:
 
@@ -613,47 +658,28 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
     
                 '''
 
-                # command = ' '.join([beagle, "gt={}".format(OUTPUT+'.bglv4.bgl.vcf'),
-                #                     "nthreads=1", "impute=false",
-                #                     "niterations=10", "lowmem=true", "out={}".format(OUTPUT+'.bglv4.bgl.phased'),
-                #                     '>', OUTPUT+'.bglv4.bgl.phased.vcf.log'])
-
-                #command = ' '.join([beagle, "gt={}".format(OUTPUT+'.bgl.vcf'),
-                #                   "impute=false", "nthreads={}".format(_nthreads),
-                #                    "niterations=5", "lowmem=true", "out={}".format(OUTPUT+'.bgl.phased')])
-                
-                if _map=="null":                
-                   
-                  command = ' '.join([beagle, "gt={}".format(OUTPUT+'.bgl.vcf'),
-                                      "impute=true", "nthreads={}".format(_nthreads),
-                                      "burnin={}".format(_burnin), "iterations={}".format(_iter),
-                                      "out={}".format(OUTPUT+'.bgl.phased'), "window={}".format(_window), "overlap={}".format(_overlap)])
-                
-                else:
-                
-                  command = ' '.join([beagle, "gt={}".format(OUTPUT+'.bgl.vcf'),
-                                      "impute=true", "nthreads={}".format(_nthreads),
-                                      "burnin={}".format(_burnin), "iterations={}".format(_iter),
-                                      "out={}".format(OUTPUT+'.bgl.phased'), "map={}".format(_map), "window={}".format(_window), "overlap={}".format(_overlap)])
-                                    
-                # print(command)
-
-                try:
-                    #os.system(command)
-                    f_log = open(OUTPUT+'.bgl.phased.vcf.log', 'w')
-                    subprocess.run(re.split(r'\s+',command), check=True, stdout=f_log, stderr=f_log)
-
-                except subprocess.CalledProcessError:
-                    # fail.
-                    print(std_ERROR_MAIN_PROCESS_NAME + "Phasing failed. See log file('{}').".format(OUTPUT+'.bgl.phased.vcf.log'))
-                    sys.exit()
+                command_parts = [
+                    beagle,
+                    f"gt={OUTPUT}.bgl.vcf",
+                    "impute=true",
+                    f"nthreads={_nthreads}",
+                    f"burnin={_burnin}",
+                    f"iterations={_iter}",
+                    f"out={OUTPUT}.bgl.phased",
+                    f"window={_window}",
+                    f"overlap={_overlap}"
+                ]
+                if _map != "null":
+                    command_parts.append(f"map={_map}")
+                command = " ".join(command_parts) + f" > {OUTPUT}.bgl.phased.vcf.log"
+                print(command)
+                result = subprocess.run(command, shell=True)
+                if result.returncode != 0:
+                    raise RuntimeError(f"Command failed with exit code {result.returncode}")
                 else:
                     # succeed.
-                    f_log.close()
                     if not f_save_intermediates:
-                        # os.system("rm {}".format())
                         os.system("rm {}".format(OUTPUT + '.bgl.vcf'))
-
                         # remove redundant log file.
                         os.system("rm {}".format(OUTPUT+'.bgl.phased.log'))
 
@@ -676,22 +702,12 @@ def MakeReference_v2(_CHPED, _OUT, _hg, _genes="A,B,C,E,F,G,H,J,K,L,V,DMA,DMB,DO
             rm $OUTPUT.phasing.log
             '''
 
-            #rm_tlist = ('.nopheno.ped', '.bgl.gprobs', '.bgl.r2', '.bgl', '.ped', '.map', '.dat')
-
-            #for i in rm_tlist:
-            #    print("rm " + OUTPUT + i)
-            #    os.system("rm " + OUTPUT + i)
-
             index += 1
-            
-            #command = ''.join(['mv ', OUTPUT, '.bgl.phased.vcf.gz ', OUTPUT, '_tmp.bgl.phased.vcf.gz'])
-            #os.system(command)
-            
-            command = ''.join(["bash MakeReference/src/Adjust_output.sh --path_Ref ", OUTPUT])
-            os.system(command)
-            
-            #command = ''.join(['rm ', OUTPUT, '_tmp.bgl.phased.vcf.gz'])
-            #os.system(command)
+            command = ''.join(["Adjust_output --path_Ref ", OUTPUT])
+            print(command)
+            result = subprocess.run(command, shell=True)
+            if result.returncode != 0:
+                raise RuntimeError(f"Command failed with exit code {result.returncode}")
 
         print("[{}] Making reference panel for HLA and is Done!".format(index))
 

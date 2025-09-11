@@ -71,7 +71,7 @@ set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 #mv ${pathRef}.frq ${pathRef}.FRQ.frq
 
 #now the vcf.gz file needs to be brought back to an old beagle format
-zcat ${pathRef}.bgl.phased.vcf.gz | java -jar dependency/vcf2beagle.jar "." ${pathRef}
+zcat ${pathRef}.bgl.phased.vcf.gz | vcf2beagle "." ${pathRef}
 sleep 60s
 gzip -d -f ${pathRef}.bgl.gz
 mv ${pathRef}.bgl ${pathRef}.bgl.phased_tmp

@@ -113,3 +113,55 @@ Here, the *path_out_reference* is the same as from *MakeReference* above. Again,
 The output is a vcf with the reference panel variants and the HLA alleles, all imputed. Each imputed variant and alleles will include an R2 value. This should not be interpreted as a dosage. Please refer to the Beagle documentation for this.
 
 Also note that the major assumption made by SNP2HLA (and hence by SNP2HLA_reudx) is that each HLA allele is made into a biallelic SNP, and imputed as such. Hence, *it does not use the fact that HLA genes are multiallelic, and will sometimes impute more than 2 possible alleles for a gene, for a given sample*. Users of this software should be aware of this for their QC.
+
+### Building the Apptainer Container
+
+To build the Apptainer container for **SNP2HLA Redux**, use the `build_container.sh` script located in the `assets/` directory. This script wraps the `apptainer build` command and offers convenient options.
+
+#### Recipe file
+
+The file `snp2hlaredux.def` (located in the same directory) is the Apptainer definition file. It specifies all the dependencies, system tools, and environment configurations required to run SNP2HLA Redux and its associated components. This includes installation of:
+- System packages (e.g. R, Python, libcurl, etc.),
+- Required R and Python libraries,
+- External tools like PLINK, BEAGLE, and others placed under the `dependency/` folder.
+
+Ensure this file is **not moved** from the `assets/` folder unless the script is updated accordingly.
+
+#### Script options
+
+```bash
+./build_container.sh [--sandbox] [--dry]
+```
+
+**Options:**
+
+- --sandbox : Builds the container as a writable sandbox directory instead of a .sif image file.
+
+- --dry : Displays the build command without executing it (for testing or debugging purposes).
+
+The resulting container image will be named:
+
+`snp2hla_container.sif` for standard builds.
+
+`snp2hla_container_SANDBOX/` for sandbox mode.
+
+Example :
+
+```
+cd assets/
+./build_container.sh
+```
+
+Or for a dry run:
+
+```
+./build_container.sh --dry
+```
+
+Or to build a sandbox :
+
+```
+./build_container.sh --sandbox
+```
+
+> Note: You must have fakeroot privileges and Apptainer installed. The container will include all dependencies to run MakeReference, SNP2HLA, and other components seamlessly inside an isolated environment.
